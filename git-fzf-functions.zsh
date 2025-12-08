@@ -3,6 +3,7 @@
 # Git + FZF Functions
 # Interactive git functions using fzf for enhanced workflow
 
+# gpick: Interactively cherry-pick a commit from any branch using fzf.
 function gpick {
     # Select local branch with fzf
     local selected_branch=$(git branch --format='%(refname:short)' | fzf --prompt="Select a branch: " --height=40%)
@@ -28,6 +29,7 @@ function gpick {
     git cherry-pick "$commit_hash" "$@"
 }
 
+# greba: Interactively rebase from a selected branch or commit using fzf.
 function greba {
     # Select between branch or commit
     local selection=$(echo -e "branch\ncommit" | fzf --prompt="Rebase from branch or commit?: " --height=40%)
@@ -64,6 +66,7 @@ function greba {
     git rebase "$target" "$@"
 }
 
+# gch: Interactively checkout a branch, handling local and remote branches with fzf.
 function gch {
     # Get all branches without remote prefixes, remove duplicates
     local selected_branch=$(git branch -a --format='%(refname:short)' | sed 's|^remotes/||' | sed 's|^[^/]*/||' | sort -u | fzf --prompt="Select a branch: " --height=40%)
@@ -102,7 +105,8 @@ function gch {
     fi
 }
 
-function select-commit {
+# selco: Select a commit from the current branch and copy its hash to clipboard using fzf.
+function selco {
     # Show commits from current branch with format: hash message
     # Search will be only in the message column (column 2)
     local selected_commit=$(git log --pretty=format:'%h %s' | fzf --prompt="Select a commit: " --height=40% --nth=2..)
@@ -122,7 +126,8 @@ function select-commit {
     echo "$commit_hash"
 }
 
-function select-branch {
+# selbra: Select a branch and copy its name to clipboard using fzf.
+function selbra {
     # Get all branches without remote prefixes, remove duplicates
     local selected_branch=$(git branch -a --format='%(refname:short)' | sed 's|^remotes/||' | sed 's|^[^/]*/||' | sort -u | fzf --prompt="Select a branch: " --height=40%)
     
@@ -138,6 +143,7 @@ function select-branch {
     echo "$selected_branch"
 }
 
+# history-widget: Select a command from shell history using fzf, filtering duplicates and removing line numbers.
 function history-widget {
     # Get command history with line numbers removed and duplicates filtered
     local selected_command=$(fc -l 1 | awk '{$1=""; print substr($0,2)}' | awk '!seen[$0]++' | sort -r | fzf --prompt="Select command: " --height=40%)
