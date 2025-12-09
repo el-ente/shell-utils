@@ -178,7 +178,13 @@ alias git-backup='current_branch=$(git symbolic-ref --short HEAD 2>/dev/null); i
 # Opens fzf menu with all repositories in ~/racoons/
 # Navigates to selected repository directory
 # Requires: fzf, $REPOSITORIES_FOLDER environment variable
-alias repo='cd "$REPOSITORIES_FOLDER/$(ls -d $REPOSITORIES_FOLDER/*/ | xargs -n1 basename | fzf)"'
+repo() {
+    local selected
+    selected=$(ls -d "$REPOSITORIES_FOLDER"/*/ | xargs -n1 basename | fzf --prompt="Select repo: ")
+    if [ -n "$selected" ]; then
+        cd "$REPOSITORIES_FOLDER/$selected"
+    fi
+}
 
 alias g-='git checkout -'
 
