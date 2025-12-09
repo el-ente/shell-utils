@@ -1,14 +1,14 @@
 #!/bin/zsh
 
+plugins=(git fzf-tab)
+
+source $ZSH/oh-my-zsh.sh
+
 # Check if fzf-tab is installed
 if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab" ]; then
     echo "fzf-tab plugin not found. Install it with:"
     echo "git clone https://github.com/Aloxaf/fzf-tab \${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab"
 fi
-
-plugins=(git fzf-tab)
-
-source $ZSH/oh-my-zsh.sh
 
 # gpick: Interactively cherry-pick a commit from any branch using fzf.
 function gpick {
