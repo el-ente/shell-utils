@@ -1,7 +1,14 @@
 #!/bin/zsh
 
-# Git + FZF Functions
-# Interactive git functions using fzf for enhanced workflow
+# Check if fzf-tab is installed
+if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab" ]; then
+    echo "fzf-tab plugin not found. Install it with:"
+    echo "git clone https://github.com/Aloxaf/fzf-tab \${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab"
+fi
+
+plugins=(git fzf-tab)
+
+source $ZSH/oh-my-zsh.sh
 
 # gpick: Interactively cherry-pick a commit from any branch using fzf.
 function gpick {
@@ -158,3 +165,31 @@ function history-widget {
 
 # Create alias for the history widget
 alias hg='history-widget'
+
+# git-backup: Creates a dated backup branch of the current branch
+# Usage: git-backup
+# Creates: backup/YYYY-MM-DD/current-branch-name
+# Example: On branch 'feature/new-ui' creates 'backup/2024-12-09/feature/new-ui'
+# Note: Does not switch branches, only creates the backup reference
+alias git-backup='current_branch=$(git symbolic-ref --short HEAD 2>/dev/null); if [ -n "$current_branch" ]; then date_iso=$(date +%Y-%m-%d);  backup_branch="backup/${date_iso}/${current_branch}"; if git branch "$backup_branch"; then echo "Backup branch created: $backup_branch"; else echo "Error: Could not create backup branch."; fi; else echo "Not on a Git branch."; fi'
+
+# repo: Interactive repository selector using fzf
+# Usage: repo
+# Opens fzf menu with all repositories in ~/racoons/
+# Navigates to selected repository directory
+# Requires: fzf, $REPOSITORIES_FOLDER environment variable
+alias repo='cd "$REPOSITORIES_FOLDER/$(ls -d ~/racoons/*/ | xargs -n1 basename | fzf)"'
+
+alias g-='git checkout -'
+
+alias cbn='git branch --show-current | pbcopy && pbpaste'
+
+alias c='clear'
+
+alias iterm='open -a iTerm'
+
+alias explorer='open -a Finder.app'
+
+alias editAliases='code ~/.zshrc'
+
+alias dev='git checkout develop'
