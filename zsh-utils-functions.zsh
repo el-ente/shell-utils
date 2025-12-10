@@ -75,8 +75,8 @@ function greba {
 
 # gch: Interactively checkout a branch, handling local and remote branches with fzf.
 function gch {
-    # Get all branches without remote prefixes, remove duplicates
-    local selected_branch=$(git branch -a --format='%(refname:short)' | sed 's|^remotes/||' | sed 's|^[^/]*/||' | sort -u | fzf --prompt="Select a branch: " --height=40%)
+    # Get all branches without remote prefixes, remove duplicates, keep full branch name
+    local selected_branch=$(git branch -a --format='%(refname:short)' | sed 's|^remotes/[^/]*/||' | sort -u | fzf --prompt="Select a branch: " --height=40%)
     
     if [ -z "$selected_branch" ]; then
         echo "No branch selected"
@@ -135,8 +135,8 @@ function selco {
 
 # selbra: Select a branch and copy its name to clipboard using fzf.
 function selbra {
-    # Get all branches without remote prefixes, remove duplicates
-    local selected_branch=$(git branch -a --format='%(refname:short)' | sed 's|^remotes/||' | sed 's|^[^/]*/||' | sort -u | fzf --prompt="Select a branch: " --height=40%)
+    # Get all branches without remote prefixes, remove duplicates, keep full branch name
+    local selected_branch=$(git branch -a --format='%(refname:short)' | sed 's|^remotes/[^/]*/||' | sort -u | fzf --prompt="Select a branch: " --height=40%)
     
     if [ -z "$selected_branch" ]; then
         echo "No branch selected"
