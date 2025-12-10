@@ -1,3 +1,5 @@
+# 📖 [Function Reference](doc/index.md)
+
 # shell-utils
 
 This is a collection of Zsh functions and aliases to make working with Git and your terminal easier, using fzf for interactive selection.
