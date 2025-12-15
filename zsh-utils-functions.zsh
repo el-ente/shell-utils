@@ -36,6 +36,8 @@ function gpick {
     git cherry-pick "$commit_hash" "$@"
 }
 
+alias gpickno='gpick -n'
+
 # greba: Interactively rebase from a selected branch or commit using fzf.
 function greba {
     # Select between branch or commit
@@ -72,6 +74,8 @@ function greba {
     # Run git rebase with the target and forward all arguments
     git rebase "$target" "$@"
 }
+
+alias grebai='greba -i'
 
 # gch: Interactively checkout a branch, handling local and remote branches with fzf.
 function gch {
