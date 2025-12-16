@@ -3,6 +3,12 @@
 # Import clipboard utilities
 source "$(dirname "$0")/clipboard-utils.sh"
 
+# Import Git aliases
+source "$(dirname "$0")/git_aliases.sh"
+
+# Import kubectl aliases
+source "$(dirname "$0")/kubectl_aliases.sh"
+
 # gpick: Interactively cherry-pick a commit from any branch using fzf.
 function gpick {
     # Select local branch with fzf
