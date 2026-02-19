@@ -162,9 +162,9 @@ function selbra {
 }
 
 # history-widget: Select a command from shell history using fzf, filtering duplicates and removing line numbers.
-# Optional parameter: pre-fill fzf search query
+# Optional parameters: pre-fill fzf search query (supports multiple words)
 function history-widget {
-    local query="${1:-}"
+    local query="$*"
 
     # Get command history with line numbers removed, sorted by frequency (most common first)
     local selected_command=$(fc -l 1 | awk '{$1=""; print substr($0,2)}' | sort | uniq -c | sort -rn | awk '{$1=""; print substr($0,2)}' | fzf --prompt="Select command: " --query="$query" --height=40%)
