@@ -1,7 +1,7 @@
 #!/bin/zsh
 
+# Load oh-my-zsh first (before defining custom functions/aliases)
 plugins=(git fzf-tab)
-
 source $ZSH/oh-my-zsh.sh
 
 # Check if fzf-tab is installed
@@ -9,6 +9,8 @@ if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab" ]; then
     echo "fzf-tab plugin not found. Install it with:"
     echo "git clone https://github.com/Aloxaf/fzf-tab \${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab"
 fi
+
+# Custom functions and aliases (defined AFTER oh-my-zsh to avoid being overwritten)
 
 # Helper function: Select a branch from local and remote branches using fzf
 function _select_branch {
