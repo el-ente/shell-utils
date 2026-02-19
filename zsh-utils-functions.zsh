@@ -213,6 +213,9 @@ alias explorer='open -a Finder.app'
 alias editAliases='code ~/.zshrc'
 
 # gwt: Create a git worktree with naming convention: repoName__branchName
+# Remove oh-my-zsh's gwt alias to use our function instead
+unalias gwt 2>/dev/null
+
 function gwt {
     # Get repo name
     local repo_root=$(git rev-parse --show-toplevel)
