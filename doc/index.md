@@ -103,6 +103,18 @@ Runs `git checkout -` to switch to the last checked-out branch.
 
 ---
 
+### gwt-delete
+
+**Interactively delete a git worktree and its directory.**
+
+- Shows a list of all worktrees (excluding main repo) using [fuzzy search](#fuzzy-search).
+- Removes the worktree using `git worktree remove`.
+- If the directory still exists after removal, deletes it.
+- If files remain after deletion (permission issues, etc.), warns user to manually review and delete.
+- Prevents deletion if you're currently inside the worktree (requires `cd` out first).
+
+---
+
 ### history-widget
 
 **Interactively select a command from your shell history using [fuzzy search](#fuzzy-search).**

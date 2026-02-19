@@ -281,4 +281,52 @@ function gwt {
     cd "$worktree_path"
 }
 
+# gwt-delete: Interactively delete a git worktree and its directory
+function gwt-delete {
+    # Check if inside a worktree (not main repo)
+    local current_dir=$(pwd)
+    local main_repo=$(git rev-parse --show-toplevel)
+
+    if [ "$current_dir" != "$main_repo" ] && git worktree list --porcelain | grep -q "^$(echo "$current_dir" | sed 's/[[\.*^$/]/\\&/g')"; then
+        echo "⚠️  You're inside a worktree. Please cd out before deleting it."
+        return 1
+    fi
+
+    # Navigate to main repo
+    cd "$main_repo" || return 1
+
+    # List all worktrees (exclude main repo)
+    local worktree_list=$(git worktree list --porcelain | awk 'NR>1 {print $1}')
+
+    if [ -z "$worktree_list" ]; then
+        echo "No worktrees found"
+        return 1
+    fi
+
+    # Select worktree
+    local selected=$(echo "$worktree_list" | fzf --prompt="Select worktree to delete: " --height=40%)
+
+    if [ -z "$selected" ]; then
+        echo "No worktree selected"
+        return 1
+    fi
+
+    # Remove via git
+    git worktree remove "$selected" 2>/dev/null
+
+    # Remove directory if still exists
+    if [ -d "$selected" ]; then
+        rm -rf "$selected"
+
+        # Check if fully removed
+        if [ -d "$selected" ]; then
+            echo "⚠️  Files remaining in: $selected"
+            echo "Review and delete manually"
+            return 1
+        fi
+    fi
+
+    echo "✓ Deleted: $selected"
+}
+
 alias dev='git checkout develop'
