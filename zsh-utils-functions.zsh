@@ -205,4 +205,72 @@ alias explorer='open -a Finder.app'
 
 alias editAliases='code ~/.zshrc'
 
+# gwt: Create a git worktree with naming convention: repoName__branchName
+function gwt {
+    # Get repo name
+    local repo_root=$(git rev-parse --show-toplevel)
+    if [ -z "$repo_root" ]; then
+        echo "Not in a Git repository"
+        return 1
+    fi
+
+    local repo_name=$(basename "$repo_root")
+
+    # Select branch (same as gch)
+    local selected_branch=$( (git branch --format='%(refname:short)'; git branch -r --format='%(refname:short)' | sed 's|^[^/]*/||') | sort -u | fzf --prompt="Select a branch: " --height=40%)
+
+    if [ -z "$selected_branch" ]; then
+        echo "No branch selected"
+        return 1
+    fi
+
+    # Worktree path: ../repoName__branchName
+    local worktree_name="${repo_name}__${selected_branch}"
+    local worktree_path="../${worktree_name}"
+
+    # If worktree already exists
+    if [ -d "$worktree_path" ]; then
+        # Check if empty
+        if [ -z "$(ls -A "$worktree_path")" ]; then
+            echo "Worktree dir exists but empty, removing..."
+            rm -rf "$worktree_path"
+        else
+            # Has content, just cd
+            echo "⚠️  Worktree already exists, navigating to existing directory..."
+            cd "$worktree_path"
+            return 0
+        fi
+    fi
+
+    # Check if branch exists locally
+    if git show-ref --verify --quiet refs/heads/"$selected_branch"; then
+        # Local branch exists, create worktree directly
+        git worktree add "$worktree_path" "$selected_branch"
+    else
+        # Branch doesn't exist locally, search in remotes
+        local remotes=($(git branch -r --format='%(refname:short)' | grep "/$selected_branch$" | sed 's|^remotes/||' | sed 's|/'"$selected_branch"'$||' | sort -u))
+
+        if [ ${#remotes[@]} -eq 0 ]; then
+            echo "Branch '$selected_branch' not found"
+            return 1
+        elif [ ${#remotes[@]} -eq 1 ]; then
+            # Only one remote, create worktree from remote
+            git worktree add "$worktree_path" "${remotes[1]}/$selected_branch"
+        else
+            # Multiple remotes, ask for selection
+            local selected_remote=$(printf '%s\n' "${remotes[@]}" | fzf --prompt="Branch exists in multiple remotes. Select one: " --height=40%)
+
+            if [ -z "$selected_remote" ]; then
+                echo "No remote selected"
+                return 1
+            fi
+
+            git worktree add "$worktree_path" "$selected_remote/$selected_branch"
+        fi
+    fi
+
+    # Navigate to worktree
+    cd "$worktree_path"
+}
+
 alias dev='git checkout develop'

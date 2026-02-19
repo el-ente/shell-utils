@@ -86,6 +86,23 @@ Runs `git checkout -` to switch to the last checked-out branch.
 
 ---
 
+### gwt
+
+**Interactively create a git worktree with naming convention `repoName__branchName`.**
+
+- Shows a list of all unique branch names (local and remote) using [fuzzy search](#fuzzy-search).
+- Creates a worktree in the parent directory with name format: `${repoName}__${branchName}`
+- If the worktree already exists:
+  - If empty: removes and creates a fresh worktree.
+  - If has content: navigates to the existing worktree (with warning).
+- If the branch exists locally, creates worktree from it.
+- If not, checks remotes:
+  - If only one remote has the branch, creates worktree from it.
+  - If multiple remotes have the branch, lets you pick the remote.
+- Automatically navigates to the new worktree.
+
+---
+
 ### history-widget
 
 **Interactively select a command from your shell history using [fuzzy search](#fuzzy-search).**
