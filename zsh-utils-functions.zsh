@@ -10,6 +10,18 @@ if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab" ]; then
     echo "git clone https://github.com/Aloxaf/fzf-tab \${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab"
 fi
 
+# Helper function: Select a branch from local and remote branches using fzf
+function _select_branch {
+    local selected_branch=$( (git branch --format='%(refname:short)'; git branch -r --format='%(refname:short)' | sed 's|^[^/]*/||') | sort -u | fzf --prompt="Select a branch: " --height=40%)
+
+    if [ -z "$selected_branch" ]; then
+        echo "No branch selected" >&2
+        return 1
+    fi
+
+    echo "$selected_branch"
+}
+
 # gpick: Interactively cherry-pick a commit from any branch using fzf.
 function gpick {
     # Select local branch with fzf
@@ -52,10 +64,9 @@ function greba {
     
     if [ "$selection" = "branch" ]; then
         # Select branch
-        target=$(git branch --format='%(refname:short)' | fzf --prompt="Select a branch: " --height=40%)
-        
+        target=$(_select_branch)
+
         if [ -z "$target" ]; then
-            echo "No branch selected"
             return 1
         fi
     elif [ "$selection" = "commit" ]; then
@@ -79,11 +90,8 @@ alias grebai='greba -i'
 
 # gch: Interactively checkout a branch, handling local and remote branches with fzf.
 function gch {
-    # Get all branches without remote prefixes, remove duplicates, keep full branch name
-    local selected_branch=$( (git branch --format='%(refname:short)'; git branch -r --format='%(refname:short)' | sed 's|^[^/]*/||') | sort -u | fzf --prompt="Select a branch: " --height=40%)
-    
+    local selected_branch=$(_select_branch)
     if [ -z "$selected_branch" ]; then
-        echo "No branch selected"
         return 1
     fi
     
@@ -139,11 +147,8 @@ function selco {
 
 # selbra: Select a branch and copy its name to clipboard using fzf.
 function selbra {
-    # Get all branches without remote prefixes, remove duplicates, keep full branch name
-    local selected_branch=$( (git branch --format='%(refname:short)'; git branch -r --format='%(refname:short)' | sed 's|^[^/]*/||') | sort -u | fzf --prompt="Select a branch: " --height=40%)
-    
+    local selected_branch=$(_select_branch)
     if [ -z "$selected_branch" ]; then
-        echo "No branch selected"
         return 1
     fi
     
@@ -216,11 +221,9 @@ function gwt {
 
     local repo_name=$(basename "$repo_root")
 
-    # Select branch (same as gch)
-    local selected_branch=$( (git branch --format='%(refname:short)'; git branch -r --format='%(refname:short)' | sed 's|^[^/]*/||') | sort -u | fzf --prompt="Select a branch: " --height=40%)
-
+    # Select branch
+    local selected_branch=$(_select_branch)
     if [ -z "$selected_branch" ]; then
-        echo "No branch selected"
         return 1
     fi
 
