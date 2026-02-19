@@ -296,7 +296,7 @@ function gwt-delete {
     cd "$main_repo" || return 1
 
     # List all worktrees (exclude main repo)
-    local worktree_list=$(git worktree list --porcelain | awk 'NR>1 {print $1}')
+    local worktree_list=$(git worktree list | awk 'NR>1 {print $1}')
 
     if [ -z "$worktree_list" ]; then
         echo "No worktrees found"
