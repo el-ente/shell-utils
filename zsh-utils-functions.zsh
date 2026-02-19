@@ -166,8 +166,8 @@ function selbra {
 function history-widget {
     local query="${1:-}"
 
-    # Get command history with line numbers removed, reverse order, and filter duplicates
-    local selected_command=$(fc -l 1 | awk '{$1=""; print substr($0,2)}' | tail -r | awk '!seen[$0]++' | fzf --prompt="Select command: " --query="$query" --height=40%)
+    # Get command history with line numbers removed, sorted by frequency (most common first)
+    local selected_command=$(fc -l 1 | awk '{$1=""; print substr($0,2)}' | sort | uniq -c | sort -rn | awk '{$1=""; print substr($0,2)}' | fzf --prompt="Select command: " --query="$query" --height=40%)
 
     if [ -z "$selected_command" ]; then
         echo "No command selected"
