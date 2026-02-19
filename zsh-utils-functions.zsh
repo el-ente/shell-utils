@@ -1,5 +1,15 @@
 #!/bin/zsh
 
+plugins=(git fzf-tab)
+
+source $ZSH/oh-my-zsh.sh
+
+# Check if fzf-tab is installed
+if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab" ]; then
+    echo "fzf-tab plugin not found. Install it with:"
+    echo "git clone https://github.com/Aloxaf/fzf-tab \${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab"
+fi
+
 # Helper function: Select a branch from local and remote branches using fzf
 function _select_branch {
     local selected_branch=$( (git branch --format='%(refname:short)'; git branch -r --format='%(refname:short)' | sed 's|^[^/]*/||') | sort -u | fzf --prompt="Select a branch: " --height=40%)
