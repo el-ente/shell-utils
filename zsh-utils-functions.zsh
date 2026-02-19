@@ -303,13 +303,16 @@ function gwt-delete {
         return 1
     fi
 
-    # Select worktree
-    local selected=$(echo "$worktree_list" | fzf --prompt="Select worktree to delete: " --height=40%)
+    # Select worktree by basename
+    local selected_basename=$(echo "$worktree_list" | xargs -n1 basename | fzf --prompt="Select worktree to delete: " --height=40%)
 
-    if [ -z "$selected" ]; then
+    if [ -z "$selected_basename" ]; then
         echo "No worktree selected"
         return 1
     fi
+
+    # Get full path from basename
+    local selected=$(echo "$worktree_list" | grep "$selected_basename$" | head -1)
 
     # Remove via git
     git worktree remove "$selected" 2>/dev/null
