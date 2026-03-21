@@ -336,3 +336,11 @@ function gwt-delete {
 }
 
 alias dev='git checkout develop'
+
+# clone: Git clone into REPOSITORIES_FOLDER and cd into it
+# Usage: clone <repo-url> [custom-name]
+function clone {
+    local repo_url="$1"
+    local repo_name="${2:-$(basename "$repo_url" .git)}"
+    git clone "$repo_url" "$REPOSITORIES_FOLDER/$repo_name" && cd "$REPOSITORIES_FOLDER/$repo_name"
+}
