@@ -17,6 +17,11 @@ else
     echo "Recommendation: install bat with: brew install bat"
 fi
 
+# Recommend glow when not available
+if ! command -v glow >/dev/null 2>&1; then
+    echo "Recommendation: install glow with: brew install glow"
+fi
+
 # Custom functions and aliases (defined AFTER oh-my-zsh to avoid being overwritten)
 
 # Helper function: Select a branch from local and remote branches using fzf
