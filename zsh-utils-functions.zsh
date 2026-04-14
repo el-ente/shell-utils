@@ -207,6 +207,10 @@ alias g-='git checkout -'
 
 alias cbn='git branch --show-current | pbcopy && pbpaste'
 
+alias cat='bat'
+
+alias grepi='grep -i'
+
 alias c='clear'
 
 alias iterm='open -a iTerm'
