@@ -55,9 +55,13 @@ fi
 ZSHRC="$HOME/.zshrc"
 
 # Ask for repositories directory
-read -p "Repositories directory [$HOME/repos]: " REPOS_DIR
-REPOS_DIR="${REPOS_DIR:-$HOME/repos}"
-mkdir -p "$REPOS_DIR"
+REPOS_DIR=$(osascript -e 'POSIX path of (choose folder with prompt "Select repositories directory")')
+if [ -z "$REPOS_DIR" ]; then
+    echo "No directory selected"
+    exit 1
+fi
+# Remove trailing slash from osascript output
+REPOS_DIR="${REPOS_DIR%/}"
 
 # Add REPOSITORIES_FOLDER export
 if ! grep -q 'export REPOSITORIES_FOLDER=' "$ZSHRC" 2>/dev/null; then
