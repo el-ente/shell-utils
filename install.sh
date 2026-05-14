@@ -72,3 +72,6 @@ fi
 if ! grep -q 'zsh-utils-functions.zsh' "$ZSHRC" 2>/dev/null; then
     echo "source \"$SCRIPT_DIR/zsh-utils-functions.zsh\"" >> "$ZSHRC"
 fi
+
+# Optional SSH key creation
+bash "$SCRIPT_DIR/create-ssh-key.sh"
