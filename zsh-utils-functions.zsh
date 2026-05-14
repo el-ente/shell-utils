@@ -10,6 +10,18 @@ if [ ! -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab" ]; then
     echo "git clone https://github.com/Aloxaf/fzf-tab \${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab"
 fi
 
+# Prefer bat over cat when available
+if command -v bat >/dev/null 2>&1; then
+    alias cat='bat'
+else
+    echo "Recommendation: install bat with: brew install bat"
+fi
+
+# Recommend glow when not available
+if ! command -v glow >/dev/null 2>&1; then
+    echo "Recommendation: install glow with: brew install glow"
+fi
+
 # Custom functions and aliases (defined AFTER oh-my-zsh to avoid being overwritten)
 
 # Helper function: Select a branch from local and remote branches using fzf
