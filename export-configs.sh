@@ -11,4 +11,7 @@ defaults export org.p0deje.Maccy "$CONFIGS_DIR/maccy.plist"
 echo "Exporting Shottr config..."
 defaults export cc.ffitch.shottr "$CONFIGS_DIR/shottr.plist"
 
+echo "Exporting Alt-Tab config..."
+defaults export com.lwouis.alt-tab-macos "$CONFIGS_DIR/alt-tab.plist"
+
 echo "Done. Configs saved to $CONFIGS_DIR"

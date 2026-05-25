@@ -52,6 +52,11 @@ if [ -f "$CONFIGS_DIR/shottr.plist" ]; then
     defaults import cc.ffitch.shottr "$CONFIGS_DIR/shottr.plist"
 fi
 
+if [ -f "$CONFIGS_DIR/alt-tab.plist" ]; then
+    echo "Restoring Alt-Tab config..."
+    defaults import com.lwouis.alt-tab-macos "$CONFIGS_DIR/alt-tab.plist"
+fi
+
 # Configure .zshrc
 ZSHRC="$HOME/.zshrc"
 
