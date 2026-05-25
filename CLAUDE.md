@@ -1,0 +1,1 @@
+After any change in this repo, check if README.md needs updating (e.g., new scripts, changed behavior, new dependencies). Then commit and push.

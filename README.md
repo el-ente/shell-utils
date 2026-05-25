@@ -38,6 +38,13 @@ This is a collection of Zsh functions and aliases to make working with Git and y
    git clone git@github.com:el-ente/shell-utils.git "$REPOSITORIES_FOLDER/shell-utils"
    ```
 
+## What else is in this repo?
+
+- **`install.sh`** — bootstraps a Mac (Homebrew, CLI tools, GUI apps, Oh My Zsh, configs)
+- **`create-ssh-key.sh`** — generates an SSH key
+- **`export-configs.sh`** — exports Maccy and Shottr configs to `configs/`
+- **`CLAUDE.md`** — agent instructions for opencode/claude-code
+
 ## Requirements
 
 You need to have both [oh-my-zsh](https://ohmyz.sh/) and [fzf](https://github.com/junegunn/fzf) installed.
