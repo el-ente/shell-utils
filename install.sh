@@ -23,7 +23,8 @@ brew install --cask \
     dbeaver-community \
     visual-studio-code \
     docker \
-    iterm2
+    iterm2 \
+    alt-tab
 
 # Oh My Zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
