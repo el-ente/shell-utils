@@ -360,3 +360,22 @@ function clone {
     local repo_name="${2:-$(basename "$repo_url" .git)}"
     git clone "$repo_url" "$REPOSITORIES_FOLDER/$repo_name" && cd "$REPOSITORIES_FOLDER/$repo_name"
 }
+
+# gclone: Interactively select a GitHub org and repo to clone into $REPOSITORIES_FOLDER
+# Usage: gclone
+# Requires: gh (authenticated), fzf, $REPOSITORIES_FOLDER
+function gclone {
+    local org=$(gh api user/orgs --jq '.[].login' | fzf --prompt="Select org: " --height=40%)
+    if [ -z "$org" ]; then
+        echo "No org selected"
+        return 1
+    fi
+
+    local repo=$(gh repo list "$org" --limit 200 --json name -q '.[].name' | fzf --prompt="Select repo: " --height=40%)
+    if [ -z "$repo" ]; then
+        echo "No repo selected"
+        return 1
+    fi
+
+    gh repo clone "$org/$repo" "$REPOSITORIES_FOLDER/$repo" && cd "$REPOSITORIES_FOLDER/$repo"
+}

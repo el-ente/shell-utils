@@ -66,6 +66,17 @@ Runs `git checkout -` to switch to the last checked-out branch.
 
 ---
 
+### gclone
+
+**Interactively select a GitHub org and repo to clone into `$REPOSITORIES_FOLDER`.**
+
+- Lists your GitHub orgs (via `gh`) and lets you pick one using [fuzzy search](#fuzzy-search).
+- Lists repos in the selected org (up to 200) and lets you pick one using [fuzzy search](#fuzzy-search).
+- Clones the selected repo into `$REPOSITORIES_FOLDER` and `cd`s into it.
+- Requires `gh` (authenticated) and `fzf`.
+
+---
+
 ### gpick
 
 **Interactively cherry-pick a commit from any branch using [fuzzy search](#fuzzy-search).**
