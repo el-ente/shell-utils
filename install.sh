@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NODE_VERSION=24
+
 # Install Homebrew if not installed
 if ! command -v brew &>/dev/null; then
     echo "Installing Homebrew..."
@@ -87,6 +89,14 @@ export NVM_DIR="\$HOME/.nvm"
 [ -s "$NVM_BREW_PREFIX/nvm.sh" ] && \\. "$NVM_BREW_PREFIX/nvm.sh"
 [ -s "$NVM_BREW_PREFIX/etc/bash_completion.d/nvm" ] && \\. "$NVM_BREW_PREFIX/etc/bash_completion.d/nvm"
 EOF
+fi
+
+# Install Node and set as default
+if [ -d "$NVM_BREW_PREFIX" ]; then
+    # shellcheck disable=SC1091
+    \. "$NVM_BREW_PREFIX/nvm.sh"
+    nvm install "$NODE_VERSION"
+    nvm alias default "$NODE_VERSION"
 fi
 
 # Optional SSH key creation
