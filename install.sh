@@ -79,5 +79,15 @@ if ! grep -q 'zsh-utils-functions.zsh' "$ZSHRC" 2>/dev/null; then
     echo "source \"$SCRIPT_DIR/zsh-utils-functions.zsh\"" >> "$ZSHRC"
 fi
 
+# Configure nvm (brew formula is keg-only and does not auto-source)
+NVM_BREW_PREFIX="$(brew --prefix nvm)"
+if [ -d "$NVM_BREW_PREFIX" ] && ! grep -q 'NVM_DIR' "$ZSHRC" 2>/dev/null; then
+    cat >> "$ZSHRC" <<EOF
+export NVM_DIR="\$HOME/.nvm"
+[ -s "$NVM_BREW_PREFIX/nvm.sh" ] && \\. "$NVM_BREW_PREFIX/nvm.sh"
+[ -s "$NVM_BREW_PREFIX/etc/bash_completion.d/nvm" ] && \\. "$NVM_BREW_PREFIX/etc/bash_completion.d/nvm"
+EOF
+fi
+
 # Optional SSH key creation
 bash "$SCRIPT_DIR/create-ssh-key.sh"

@@ -40,7 +40,7 @@ This is a collection of Zsh functions and aliases to make working with Git and y
 
 ## What else is in this repo?
 
-- **`install.sh`** — bootstraps a Mac (Homebrew, CLI tools, GUI apps, Oh My Zsh, configs)
+- **`install.sh`** — bootstraps a Mac (Homebrew, CLI tools, GUI apps, Oh My Zsh, nvm config, configs)
 - **`create-ssh-key.sh`** — generates an SSH key
 - **`export-configs.sh`** — exports Maccy and Shottr configs to `configs/`
 - **`CLAUDE.md`** — agent instructions for opencode/claude-code
