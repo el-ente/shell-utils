@@ -26,7 +26,7 @@ fi
 
 # Helper function: Select a branch from local and remote branches using fzf
 function _select_branch {
-    local selected_branch=$( (git branch --format='%(refname:short)'; git branch -r --format='%(refname:short)' | sed 's|^[^/]*/||') | sort -u | fzf --prompt="Select a branch: " --height=40%)
+    local selected_branch=$( (git branch --format='%(refname:short)'; git branch -r --format='%(refname:short)' | sed 's|^[^/]*/||') | sort -u | fzf --prompt="Select a branch: " --height=40% --query="$1" --select-1)
 
     if [ -z "$selected_branch" ]; then
         echo "No branch selected" >&2
@@ -104,7 +104,7 @@ alias grebai='greba -i'
 
 # gch: Interactively checkout a branch, handling local and remote branches with fzf.
 function gch {
-    local selected_branch=$(_select_branch)
+    local selected_branch=$(_select_branch "$1")
     if [ -z "$selected_branch" ]; then
         return 1
     fi
@@ -161,7 +161,7 @@ function selco {
 
 # selbra: Select a branch and copy its name to clipboard using fzf.
 function selbra {
-    local selected_branch=$(_select_branch)
+    local selected_branch=$(_select_branch "$1")
     if [ -z "$selected_branch" ]; then
         return 1
     fi
@@ -246,7 +246,7 @@ function gwt {
     local repo_name=$(basename "$repo_root")
 
     # Select branch
-    local selected_branch=$(_select_branch)
+    local selected_branch=$(_select_branch "$1")
     if [ -z "$selected_branch" ]; then
         return 1
     fi

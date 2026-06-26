@@ -59,6 +59,7 @@ Runs `git checkout -` to switch to the last checked-out branch.
 **Interactively checkout a branch (local or remote) using [fuzzy search](#fuzzy-search).**
 
 - Shows a list of all unique branch names (local and remote) using [fuzzy search](#fuzzy-search).
+- Optional argument: prefills the fuzzy-search query (e.g. `gch feat`). If it matches a single branch, it's auto-selected.
 - If the branch exists locally, checks it out.
 - If not, checks remotes:
   - If only one remote has the branch, creates a local branch from it.
@@ -102,6 +103,7 @@ Runs `git checkout -` to switch to the last checked-out branch.
 **Interactively create a git worktree with naming convention `repoName__branchName`.**
 
 - Shows a list of all unique branch names (local and remote) using [fuzzy search](#fuzzy-search).
+- Optional argument: prefills the fuzzy-search query; a single match is auto-selected.
 - Creates a worktree in the parent directory with name format: `${repoName}__${branchName}`
 - If the worktree already exists:
   - If empty: removes and creates a fresh worktree.
@@ -157,6 +159,7 @@ Opens iTerm (macOS only).
 **Interactively select a branch and copy its name to clipboard.**
 
 - Shows a list of all unique branch names (local and remote) using [fuzzy search](#fuzzy-search).
+- Optional argument: prefills the fuzzy-search query; a single match is auto-selected.
 - Copies the selected branch name to your clipboard and prints it.
 
 ---
