@@ -423,10 +423,10 @@ function _select_repo {
     echo "$selected_repo"
 }
 
-# see-prs: Select a repo and open its pull requests page in the browser
-# Usage: see-prs [query]  |  see-prs --refresh
+# seeprs: Select a repo and open its pull requests page in the browser
+# Usage: seeprs [query]  |  seeprs --refresh
 # Requires: gh (authenticated), fzf
-function see-prs {
+function seeprs {
     local repo=$(_select_repo "$1") || return 1
     gh pr list --web -R "$repo"
 }

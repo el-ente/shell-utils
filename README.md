@@ -47,7 +47,7 @@ This is a collection of Zsh functions and aliases to make working with Git and y
 
 ## Requirements
 
-You need to have [oh-my-zsh](https://ohmyz.sh/), [fzf](https://github.com/junegunn/fzf), and the [GitHub CLI (`gh`)](https://cli.github.com/) installed. `gh` must be authenticated (`gh auth login`) for the `gclone` and `see-prs` functions.
+You need to have [oh-my-zsh](https://ohmyz.sh/), [fzf](https://github.com/junegunn/fzf), and the [GitHub CLI (`gh`)](https://cli.github.com/) installed. `gh` must be authenticated (`gh auth login`) for the `gclone` and `seeprs` functions.
 
 - **oh-my-zsh:**
 
