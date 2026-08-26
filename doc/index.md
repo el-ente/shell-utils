@@ -159,7 +159,7 @@ Opens iTerm (macOS only).
 **Select a GitHub repo and open its pull requests page in the browser.**
 
 - Lists every repo you own or can access through your GitHub orgs, using [fuzzy search](#fuzzy-search).
-- When run inside a GitHub repo, that repo is preselected as the search query, so pressing enter accepts it.
+- When run inside a GitHub repo, that repo is moved to the top of the list and preselected, so pressing enter accepts it. Nothing is typed into the search box, so you can search for another repo right away.
 - Opens the pull requests page of the selected repo with `gh pr list --web`.
 - Accepts an optional query to prefill the fuzzy search: `seeprs db-writer`.
 - The repo list is cached in `${XDG_CACHE_HOME:-$HOME/.cache}/shell-utils/repos.txt` and rebuilt every 24 hours. Run `seeprs --refresh` to rebuild it immediately.

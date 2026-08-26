@@ -408,12 +408,21 @@ function _select_repo {
         return 1
     fi
 
-    # Default the fzf query to the current repo, when inside one
+    # Without an explicit query, move the current repo to the top of the list so
+    # it is preselected without any text to erase before searching for another one
+    local current_repo=""
     if [ -z "$query" ]; then
-        query=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)
+        current_repo=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)
+        grep -qxF "$current_repo" "$cache_file" 2>/dev/null || current_repo=""
     fi
 
-    local selected_repo=$(fzf --prompt="Select a repo: " --height=40% --query="$query" < "$cache_file")
+    local selected_repo
+    if [ -n "$current_repo" ]; then
+        selected_repo=$( { echo "$current_repo"; grep -vxF "$current_repo" "$cache_file" } \
+            | fzf --prompt="Select a repo: " --height=40% )
+    else
+        selected_repo=$(fzf --prompt="Select a repo: " --height=40% --query="$query" < "$cache_file")
+    fi
 
     if [ -z "$selected_repo" ]; then
         echo "No repo selected" >&2
