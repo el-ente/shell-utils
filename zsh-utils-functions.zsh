@@ -379,3 +379,54 @@ function gclone {
 
     gh repo clone "$org/$repo" "$REPOSITORIES_FOLDER/$repo" && cd "$REPOSITORIES_FOLDER/$repo"
 }
+
+# Helper function: Select a GitHub repo (owner/name) from a cached list using fzf
+# Usage: _select_repo [query]  |  _select_repo --refresh
+# Requires: gh (authenticated), fzf
+function _select_repo {
+    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/shell-utils"
+    local cache_file="$cache_dir/repos.txt"
+    local query="$1"
+
+    if [ "$query" = "--refresh" ]; then
+        rm -f "$cache_file"
+        query=""
+    fi
+
+    # Rebuild cache when missing, empty or older than 24h
+    if [ ! -s "$cache_file" ] || [ -n "$(find "$cache_file" -mmin +1440 2>/dev/null)" ]; then
+        mkdir -p "$cache_dir"
+        echo "Refreshing repo list..." >&2
+        { gh api user -q .login; gh api user/orgs -q '.[].login' } \
+            | while read -r owner; do
+                gh repo list "$owner" --limit 500 --json nameWithOwner -q '.[].nameWithOwner'
+            done | sort -u > "$cache_file"
+    fi
+
+    if [ ! -s "$cache_file" ]; then
+        echo "Could not build repo list. Is gh authenticated?" >&2
+        return 1
+    fi
+
+    # Default the fzf query to the current repo, when inside one
+    if [ -z "$query" ]; then
+        query=$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null)
+    fi
+
+    local selected_repo=$(fzf --prompt="Select a repo: " --height=40% --query="$query" < "$cache_file")
+
+    if [ -z "$selected_repo" ]; then
+        echo "No repo selected" >&2
+        return 1
+    fi
+
+    echo "$selected_repo"
+}
+
+# see-prs: Select a repo and open its pull requests page in the browser
+# Usage: see-prs [query]  |  see-prs --refresh
+# Requires: gh (authenticated), fzf
+function see-prs {
+    local repo=$(_select_repo "$1") || return 1
+    gh pr list --web -R "$repo"
+}
